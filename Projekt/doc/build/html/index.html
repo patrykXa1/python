@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to Projekt’s documentation! &#8212; Projekt 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/haiku.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="#">
+          <span>Projekt 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Welcome to Projekt’s documentation!</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <section id="welcome-to-projekt-s-documentation">
+<h1>Welcome to Projekt’s documentation!<a class="headerlink" href="#welcome-to-projekt-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="module-wisielec">
+<span id="wisielec-module"></span><h1>wisielec module<a class="headerlink" href="#module-wisielec" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="wisielec.Window">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wisielec.</span></span><span class="sig-name descname"><span class="pre">Window</span></span><a class="reference internal" href="_modules/wisielec.html#Window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.board">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">board</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.board"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays alphabet buttons
+Displays labels for player,score and category
+calls function check_the_letter after click on letter button</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.categories">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">categories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.categories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display categories for of words for the game</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.check_the_letter">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_the_letter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">letter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">the_word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hangman</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.check_the_letter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.check_the_letter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if variable letter is in string the word</p>
+<p>self:Tk()
+letter:string
+label:Label
+the_word:string
+button:Button
+hangman:Label
+score_label:Label</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.delete_widgets">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete_widgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.delete_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.delete_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all widgets
+:param self:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.init">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays two buttons to select a player
+Parameters
+———-
+self:Tk()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.new_player">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_player_btn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_account_btn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.new_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.new_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays entry for nick and e-mail of new player,
+display submit button to save data and start the game</p>
+<p>self:Tk()
+new_player_btn:button
+select_account_btn:button</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.random_word">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">random_word</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.random_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.random_word" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select random word from file in chosen category</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.select_category">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">this_category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.select_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.select_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save category to variable and start the game</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.select_player">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_player_btn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_account_btn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.select_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.select_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command for button to select a player
+Create entry for nick</p>
+<p>self: Tk()
+new_player_btn:button
+select_account_btn:button</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.submit_new_player">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">submit_new_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nick_entry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_mail_entry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.submit_new_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.submit_new_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>If nick is uniq display categories
+else
+display alert</p>
+<p>self:Tk()
+nick_entry:entry
+e_mail_entry:entry</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="wisielec.Window.submit_select_player">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">submit_select_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nick_entry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wisielec.html#Window.submit_select_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wisielec.Window.submit_select_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command for submit select player
+if nick in correct (it is in database) displays categories
+else
+display alert</p>
+<p>self:Tk()
+nick_entry:entry</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-base">
+<span id="base-module"></span><h1>base module<a class="headerlink" href="#module-base" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="base.Players">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">base.</span></span><span class="sig-name descname"><span class="pre">Players</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_mail</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/base.html#Players"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#base.Players" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Players.e_mail">
+<span class="sig-name descname"><span class="pre">e_mail</span></span><a class="headerlink" href="#base.Players.e_mail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Players.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#base.Players.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Players.nick">
+<span class="sig-name descname"><span class="pre">nick</span></span><a class="headerlink" href="#base.Players.nick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="base.Scores">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">base.</span></span><span class="sig-name descname"><span class="pre">Scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_player</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/base.html#Scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#base.Scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Scores.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#base.Scores.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Scores.id_player">
+<span class="sig-name descname"><span class="pre">id_player</span></span><a class="headerlink" href="#base.Scores.id_player" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="base.Scores.score">
+<span class="sig-name descname"><span class="pre">score</span></span><a class="headerlink" href="#base.Scores.score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Patryk Grodzicki.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wisielec &#8212; Projekt 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>Projekt 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>wisielec</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <h1>Source code for wisielec</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">messagebox</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">base</span> <span class="kn">import</span> <span class="n">Players</span><span class="p">,</span> <span class="n">Scores</span><span class="p">,</span> <span class="n">Session</span>
+
+
+<span class="n">loss_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">win_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">number_of_left_letters</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#e5eeba&#39;</span>
+<span class="n">player_nick</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">player_id</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Window"><a class="viewcode-back" href="../index.html#wisielec.Window">[docs]</a><span class="k">class</span> <span class="nc">Window</span><span class="p">:</span>
+<div class="viewcode-block" id="Window.init"><a class="viewcode-back" href="../index.html#wisielec.Window.init">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Displays two buttons to select a player</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self:Tk()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;1100x600&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+        <span class="n">image_new_player</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">&#39;button_nowy-gracz.png&#39;</span><span class="p">)</span>
+        <span class="n">new_player_btn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image_new_player</span><span class="p">)</span>
+        <span class="n">new_player_btn</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image_new_player</span>
+        <span class="n">new_player_btn</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">Window</span><span class="o">.</span><span class="n">new_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_player_btn</span><span class="p">,</span> <span class="n">select_account_btn</span><span class="p">)</span>
+        <span class="n">new_player_btn</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">175</span><span class="p">)</span>
+
+        <span class="n">image_select_account</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">&#39;button_wybierz-konto.png&#39;</span><span class="p">)</span>
+        <span class="n">select_account_btn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image_select_account</span><span class="p">)</span>
+        <span class="n">select_account_btn</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image_select_account</span>
+        <span class="n">select_account_btn</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">Window</span><span class="o">.</span><span class="n">select_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_player_btn</span><span class="p">,</span> <span class="n">select_account_btn</span><span class="p">)</span>
+        <span class="n">select_account_btn</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">375</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.select_player"><a class="viewcode-back" href="../index.html#wisielec.Window.select_player">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">select_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_player_btn</span><span class="p">,</span> <span class="n">select_account_btn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Command for button to select a player</span>
+<span class="sd">        Create entry for nick</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self: Tk()</span>
+<span class="sd">        new_player_btn:button</span>
+<span class="sd">        select_account_btn:button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Comic Sans MS&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">select_account_btn</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="n">new_player_btn</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="n">nick_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Wpisz swój nick:&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">nick_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">370</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">275</span><span class="p">)</span>
+
+        <span class="n">nick_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">nick_entry</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">520</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">275</span><span class="p">)</span>
+
+        <span class="n">submit_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">submit_button</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">Window</span><span class="o">.</span><span class="n">submit_select_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nick_entry</span><span class="p">)</span>
+        <span class="n">submit_button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">370</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">315</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.submit_select_player"><a class="viewcode-back" href="../index.html#wisielec.Window.submit_select_player">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">submit_select_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nick_entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Command for submit select player</span>
+<span class="sd">            if nick in correct (it is in database) displays categories</span>
+<span class="sd">            else</span>
+<span class="sd">            display alert</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            self:Tk()</span>
+<span class="sd">            nick_entry:entry</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nick</span> <span class="o">=</span> <span class="n">nick_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">global</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_nick</span>
+        <span class="n">font2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Comic Sans Ms&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="n">nick</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Players</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Players</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">nick</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">player_id</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Players</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Players</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">nick</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">player_nick</span> <span class="o">=</span> <span class="n">nick</span>
+                <span class="n">Window</span><span class="o">.</span><span class="n">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">Window</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alert</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;wpisz prawidłowy nick&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font2</span><span class="p">)</span>
+                <span class="n">alert</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">430</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">315</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.new_player"><a class="viewcode-back" href="../index.html#wisielec.Window.new_player">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">new_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_player_btn</span><span class="p">,</span> <span class="n">select_account_btn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays entry for nick and e-mail of new player,</span>
+<span class="sd">        display submit button to save data and start the game</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self:Tk()</span>
+<span class="sd">        new_player_btn:button</span>
+<span class="sd">        select_account_btn:button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Comic Sans MS&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">select_account_btn</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="n">new_player_btn</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="n">nick_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;nick:&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">nick_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">265</span><span class="p">)</span>
+
+        <span class="n">e_mail_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;e-mail:&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">e_mail_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">315</span><span class="p">)</span>
+
+        <span class="n">nick_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">nick_entry</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">510</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">265</span><span class="p">)</span>
+
+        <span class="n">e_mail_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">e_mail_entry</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">510</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">315</span><span class="p">)</span>
+
+        <span class="n">submit_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">submit_button</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">Window</span><span class="o">.</span><span class="n">submit_new_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nick_entry</span><span class="p">,</span> <span class="n">e_mail_entry</span><span class="p">)</span>
+        <span class="n">submit_button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">375</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.submit_new_player"><a class="viewcode-back" href="../index.html#wisielec.Window.submit_new_player">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">submit_new_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nick_entry</span><span class="p">,</span> <span class="n">e_mail_entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;If nick is uniq display categories</span>
+<span class="sd">        else</span>
+<span class="sd">        display alert</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self:Tk()</span>
+<span class="sd">        nick_entry:entry</span>
+<span class="sd">        e_mail_entry:entry</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nick</span> <span class="o">=</span> <span class="n">nick_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">e_mail</span> <span class="o">=</span> <span class="n">e_mail_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">global</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_nick</span>
+        <span class="n">font2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Comic Sans Ms&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nick</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">e_mail</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Players</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Players</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">nick</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Players</span><span class="p">(</span><span class="n">nick</span><span class="p">,</span> <span class="n">e_mail</span><span class="p">))</span>
+                <span class="n">player_nick</span> <span class="o">=</span> <span class="n">nick</span>
+                <span class="n">player_id</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Players</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Players</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">nick</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">Window</span><span class="o">.</span><span class="n">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">Window</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alert</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;wpisz unikalny nick&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font2</span><span class="p">)</span>
+                <span class="n">alert</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">470</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.categories"><a class="viewcode-back" href="../index.html#wisielec.Window.categories">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display categories for of words for the game&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;1100x600&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;geografia&#39;</span><span class="p">,</span> <span class="s1">&#39;jedzenie&#39;</span><span class="p">,</span> <span class="s1">&#39;anatomia&#39;</span><span class="p">,</span> <span class="s1">&#39;muzyka&#39;</span><span class="p">,</span><span class="s1">&#39;zwierzęta&#39;</span><span class="p">]</span>
+        <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;button_geografia&#39;</span><span class="p">,</span> <span class="s1">&#39;button_jedzenie&#39;</span><span class="p">,</span> <span class="s1">&#39;button_anatomia&#39;</span><span class="p">,</span> <span class="s1">&#39;button_muzyka&#39;</span><span class="p">,</span> <span class="s1">&#39;button_zwierzeta&#39;</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">+=</span> <span class="mi">120</span>
+            <span class="n">button</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">category</span><span class="o">=</span> <span class="n">categories</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">Window</span><span class="o">.</span><span class="n">select_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.random_word"><a class="viewcode-back" href="../index.html#wisielec.Window.random_word">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">random_word</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Select random word from file in chosen category&quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">category</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;kategorie.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">word</span></div>
+
+<div class="viewcode-block" id="Window.select_category"><a class="viewcode-back" href="../index.html#wisielec.Window.select_category">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">select_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">this_category</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save category to variable and start the game&quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">category</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">this_category</span>
+        <span class="n">Window</span><span class="o">.</span><span class="n">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Window</span><span class="o">.</span><span class="n">board</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Window.board"><a class="viewcode-back" href="../index.html#wisielec.Window.board">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">board</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Displays alphabet buttons</span>
+<span class="sd">        Displays labels for player,score and category</span>
+<span class="sd">        calls function check_the_letter after click on letter button&quot;&quot;&quot;</span>
+
+        <span class="n">player_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Gracz: </span><span class="si">{</span><span class="n">player_nick</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;arial&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">player_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+
+        <span class="n">score_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Wynik:</span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;arial&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">score_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+
+        <span class="n">category_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Kategoria: </span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;arial&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">category_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">300</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">the_word</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">random_word</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_word</span><span class="p">)):</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">60</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;arial&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">)))</span>
+            <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+
+        <span class="n">hangman</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">h_images</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;draw1&#39;</span><span class="p">,</span> <span class="s1">&#39;draw2&#39;</span><span class="p">,</span> <span class="s1">&#39;draw3&#39;</span><span class="p">,</span> <span class="s1">&#39;draw4&#39;</span><span class="p">,</span> <span class="s1">&#39;draw5&#39;</span><span class="p">,</span> <span class="s1">&#39;draw6&#39;</span><span class="p">,</span> <span class="s1">&#39;draw7&#39;</span><span class="p">,</span> <span class="s1">&#39;draw8&#39;</span><span class="p">,</span> <span class="s1">&#39;draw9&#39;</span><span class="p">,</span> <span class="s1">&#39;draw10&#39;</span><span class="p">,</span> <span class="s1">&#39;draw11&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">h_images</span><span class="p">:</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+            <span class="n">hangman</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">draw</span><span class="p">))</span>
+            <span class="n">hangman</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">hangman</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">draw</span>
+
+        <span class="n">alphabet</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;button_a&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ą&#39;</span><span class="p">,</span> <span class="s1">&#39;button_b&#39;</span><span class="p">,</span> <span class="s1">&#39;button_c&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ć&#39;</span><span class="p">,</span> <span class="s1">&#39;button_d&#39;</span><span class="p">,</span> <span class="s1">&#39;button_e&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ę&#39;</span><span class="p">,</span> <span class="s1">&#39;button_f&#39;</span><span class="p">,</span> <span class="s1">&#39;button_g&#39;</span><span class="p">,</span> <span class="s1">&#39;button_h&#39;</span><span class="p">,</span> <span class="s1">&#39;button_i&#39;</span><span class="p">,</span> <span class="s1">&#39;button_j&#39;</span><span class="p">,</span><span class="s1">&#39;button_k&#39;</span><span class="p">,</span><span class="s1">&#39;button_l&#39;</span><span class="p">,</span><span class="s1">&#39;button_ł&#39;</span><span class="p">,</span> <span class="s1">&#39;button_m&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;button_n&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ń&#39;</span><span class="p">,</span> <span class="s1">&#39;button_o&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ó&#39;</span><span class="p">,</span> <span class="s1">&#39;button_p&#39;</span><span class="p">,</span> <span class="s1">&#39;button_r&#39;</span><span class="p">,</span> <span class="s1">&#39;button_s&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ś&#39;</span><span class="p">,</span> <span class="s1">&#39;button_t&#39;</span><span class="p">,</span> <span class="s1">&#39;button_u&#39;</span><span class="p">,</span> <span class="s1">&#39;button_w&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;button_y&#39;</span><span class="p">,</span> <span class="s1">&#39;button_z&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ź&#39;</span><span class="p">,</span> <span class="s1">&#39;button_ż&#39;</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">240</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">350</span>
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">60</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">letter</span><span class="p">))</span>
+            <span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">activebackground</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">button</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">last_letter</span><span class="o">=</span><span class="n">letter</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">button</span><span class="o">=</span><span class="n">button</span><span class="p">:</span> <span class="n">Window</span><span class="o">.</span><span class="n">check_the_letter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">last_letter</span><span class="p">,</span><span class="n">label</span><span class="p">,</span><span class="n">the_word</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">hangman</span><span class="p">,</span><span class="n">score_label</span><span class="p">)</span>
+            <span class="c1"># Use default parameter to avoid late-binding issue (Otherwise last_letter is bound when the lambda function is called, not when it is created):</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>  <span class="c1"># keep reference because of garbage collector</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">720</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="mi">240</span>
+                <span class="n">y</span> <span class="o">+=</span> <span class="mi">60</span></div>
+
+
+
+
+<div class="viewcode-block" id="Window.check_the_letter"><a class="viewcode-back" href="../index.html#wisielec.Window.check_the_letter">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_the_letter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">letter</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">the_word</span><span class="p">,</span> <span class="n">button</span><span class="p">,</span> <span class="n">hangman</span><span class="p">,</span> <span class="n">score_label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if variable letter is in string the word</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self:Tk()</span>
+<span class="sd">        letter:string</span>
+<span class="sd">        label:Label</span>
+<span class="sd">        the_word:string</span>
+<span class="sd">        button:Button</span>
+<span class="sd">        hangman:Label</span>
+<span class="sd">        score_label:Label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">win_count</span><span class="p">,</span> <span class="n">loss_count</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">number_of_left_letters</span>
+        <span class="n">button</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="c1">#print(the_word)</span>
+        <span class="n">number_of_left_letters</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">the_word</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_word</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">letter</span> <span class="o">==</span> <span class="n">the_word</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">win_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">letter</span><span class="p">)</span>
+                    <span class="n">score_label</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Wynik:</span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">win_count</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_word</span><span class="p">):</span>
+
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askyesno</span><span class="p">(</span><span class="s1">&#39;Koniec gry&#39;</span><span class="p">,</span> <span class="s1">&#39;Wygrałeś!</span><span class="se">\n</span><span class="s1">Chcesz zagrać jeszcze raz?&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+                    <span class="n">win_count</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">loss_count</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">score</span> <span class="o">*=</span> <span class="n">number_of_left_letters</span>
+                    <span class="c1"># save score to session</span>
+                    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Scores</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+                    <span class="n">number_of_left_letters</span> <span class="o">=</span> <span class="mi">26</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">Window</span><span class="o">.</span><span class="n">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="n">Window</span><span class="o">.</span><span class="n">board</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loss_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">hangman</span><span class="p">[</span><span class="n">loss_count</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">loss_count</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askyesno</span><span class="p">(</span><span class="s1">&#39;Koniec gry&#39;</span><span class="p">,</span> <span class="s1">&#39;Przegrałeś!</span><span class="se">\n</span><span class="s1">Chcesz zagrać jeszcze raz?&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+                    <span class="n">win_count</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">loss_count</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">score</span> <span class="o">-=</span> <span class="n">number_of_left_letters</span>
+                    <span class="c1"># save score to session</span>
+                    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Scores</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+                    <span class="n">number_of_left_letters</span> <span class="o">=</span> <span class="mi">26</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">Window</span><span class="o">.</span><span class="n">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="n">Window</span><span class="o">.</span><span class="n">board</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Window.delete_widgets"><a class="viewcode-back" href="../index.html#wisielec.Window.delete_widgets">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">delete_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all widgets</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+    <span class="n">Window</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+
+<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+
+
+
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Patryk Grodzicki.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>
